@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
-class AuthForm extends Component {
+class SignIn extends Component {
 	state = {}
 	render() {
+		const { handleSubmit } = this.props
 		return (
 			<div>
 				<h2>Sign in</h2>
-				<form>
+				<form onSubmit={handleSubmit}>
 					<div>
 						<label htmlFor="email">Email</label>
 						<Field name="email" component="input" />
@@ -25,5 +26,5 @@ class AuthForm extends Component {
 }
 
 export default reduxForm({
-	form: 'auth',
-})(AuthForm)
+	form: 'signIn',
+})(SignIn)
