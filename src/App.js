@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Root from './components/root'
+import Root from './hoc/root'
 import store from './redux'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
