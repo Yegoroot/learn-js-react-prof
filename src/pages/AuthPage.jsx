@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import SignInForm from '../components/molecules/signInForm'
-import SignUpForm from '../components/molecules/signUpForm'
+import SignInForm from '../components/molecules/auth/signInForm'
+import SignUpForm from '../components/molecules/auth/signUpForm'
+import { connect } from 'react-redux'
+import { signUp, moduleName } from '../ducks/auth'
 
 import { Route, NavLink } from 'react-router-dom'
 class AuthPage extends Component {
@@ -9,9 +11,10 @@ class AuthPage extends Component {
 		this.state = {}
 	}
 	render() {
+		const { loading } = this.props
 		return (
 			<div>
-				<h1>AuthPage</h1>
+				{loading ? <h1>Загрузка... </h1> : <h1>AuthPage</h1>}
 				<NavLink to="/auth/signin" activeStyle={{ color: 'red' }}>
 					sign in
 				</NavLink>
@@ -25,7 +28,12 @@ class AuthPage extends Component {
 	}
 
 	handleSignIn = values => console.log('___', values)
-	handleSignUp = values => console.log('___', values)
+	handleSignUp = ({ email, password }) => this.props.signUp(email, password)
 }
 
-export default AuthPage
+export default connect(
+	state => ({
+		loading: state[moduleName].loading,
+	}),
+	{ signUp },
+)(AuthPage)

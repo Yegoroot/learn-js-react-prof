@@ -4,10 +4,11 @@ import emailValidator from 'email-validator'
 class SignUp extends Component {
 	state = {}
 	render() {
+		const { handleSubmit } = this.props
 		return (
 			<div>
 				<h2>Sign in</h2>
-				<form>
+				<form onSubmit={handleSubmit}>
 					<div>
 						<label htmlFor="email">Email</label>
 						<Field name="email" component="input" />
@@ -37,6 +38,6 @@ const validate = ({ email, password }) => {
 }
 
 export default reduxForm({
-	form: 'signUp',
+	form: 'authSignUp',
 	validate,
 })(SignUp)
