@@ -1,5 +1,5 @@
 // Initialize Firebase
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 
 export const appName = 'react-6b4df'
 export const firebaseConfig = {

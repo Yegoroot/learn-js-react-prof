@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
-import Root from './hoc/root'
 import store from './redux'
 import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'react-router-redux'
-import history from './history'
+import { ConnectedRouter } from 'connected-react-router'
 import './config/firebase'
+import Root from './hoc/root'
+import history from './history'
 class App extends Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<ConnectedRouter store={store} history={history}>
-					<Root />
+				<ConnectedRouter history={history}>
+					<div>
+						{/** прослойка обязательно */}
+						<Root />
+					</div>
 				</ConnectedRouter>
 			</Provider>
 		)
