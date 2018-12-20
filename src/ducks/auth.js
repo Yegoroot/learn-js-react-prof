@@ -1,4 +1,4 @@
-import { appName } from '../config/firebase'
+import { appName } from '../config/common'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { Record } from 'immutable'
