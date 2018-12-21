@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
+import ErrorsField from '../ErrorsField'
+
 class SignIn extends Component {
 	state = {}
 	render() {
@@ -8,14 +10,10 @@ class SignIn extends Component {
 			<div>
 				<h2>Sign in</h2>
 				<form onSubmit={handleSubmit}>
-					<div>
-						<label htmlFor="email">Email</label>
-						<Field name="email" component="input" />
-					</div>
-					<div>
-						<label htmlFor="password">Password</label>
-						<Field name="password" component="input" type="password" />
-					</div>
+					<Field name="email" component={ErrorsField} />
+
+					<Field name="password" component={ErrorsField} type="password" />
+
 					<div>
 						<input type="submit" />
 					</div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import SignInForm from '../components/molecules/auth/signInForm'
-import SignUpForm from '../components/molecules/auth/signUpForm'
+import SignInForm from '../components/Auth/SignInForm'
+import SignUpForm from '../components/Auth/SignUpForm'
 import { connect } from 'react-redux'
 import { signUp, moduleName } from '../ducks/auth'
 
