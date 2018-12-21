@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import store from './redux'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
-import './config/common'
+import './_general/config'
 import Root from './hoc/root'
 import history from './history'
 class App extends Component {
