@@ -1,6 +1,6 @@
 import { appName } from '../_general/config'
 import { Record, List } from 'immutable'
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, call } from 'redux-saga/effects'
 import { generateId } from '../_general/utils'
 
 // ВИД (пока в виде листа)
@@ -42,8 +42,8 @@ export function addPerson(person) {
 }
 
 // SAGAS
-const addPersonSaga = function*(action) {
-	const id = generateId()
+export const addPersonSaga = function*(action) {
+	const id = yield call(generateId)
 	yield put({
 		type: ADD_PERSON,
 		payload: { ...action.payload, id },
