@@ -4,6 +4,8 @@ import 'firebase/auth'
 import { Record } from 'immutable'
 // import store from '../redux'
 import { all, take, cps, call, put } from 'redux-saga/effects'
+import { takeEvery } from 'redux-saga'
+import { push } from 'connected-react-router'
 
 // for mutations
 const ReducerRecord = Record({
@@ -18,6 +20,8 @@ export const SIGN_UP_REQUEST = `${appName}/${moduleName}/SIGN_UP_REQUEST`
 export const SIGN_UP_SUCCESS = `${appName}/${moduleName}/SIGN_UP_SUCCESS`
 export const SIGN_IN_SUCCESS = `${appName}/${moduleName}/SIGN_IN_SUCCESS`
 export const SIGN_UP_ERROR = `${appName}/${moduleName}/SIGN_UP_ERROR`
+export const SIGN_OUT_REQUEST = `${appName}/${moduleName}/SIGN_OUT_REQUEST`
+export const SIGN_OUT_SUCCESS = `${appName}/${moduleName}/SIGN_OUT_SUCCESS`
 
 // reducer
 export default function reducer(state = new ReducerRecord(), action) {
@@ -33,6 +37,9 @@ export default function reducer(state = new ReducerRecord(), action) {
                 .set('error', null)
         case SIGN_UP_ERROR:
             return state.set('loading', false).set('error', error)
+
+        case SIGN_OUT_SUCCESS:
+            return new ReducerRecord()
         default:
             return state
     }
@@ -43,6 +50,12 @@ export function signUp(email, password) {
     return {
         type: SIGN_UP_REQUEST,
         payload: { email, password },
+    }
+}
+
+export function signOut() {
+    return {
+        type: SIGN_OUT_REQUEST,
     }
 }
 
@@ -75,6 +88,7 @@ export const signUpSaga = function*() {
 
 export const watchStatusChange = function*() {
     const auth = firebase.auth()
+
     try {
         // в node овском стиле первым аргументом идет ошибка а не данные
         yield cps([auth, auth.onAuthStateChanged])
@@ -86,6 +100,18 @@ export const watchStatusChange = function*() {
     }
 }
 
+export const signOutSaga = function*() {
+    const auth = firebase.auth()
+
+    try {
+        yield call([auth, auth.signOut])
+        yield put({
+            type: SIGN_OUT_SUCCESS,
+        })
+        yield put(push('/auth/signin'))
+    } catch (_) {}
+}
+
 export const saga = function*() {
-    yield all([signUpSaga(), watchStatusChange()])
+    yield all([signUpSaga(), watchStatusChange(), takeEvery(SIGN_OUT_REQUEST, signOutSaga)])
 }

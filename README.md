@@ -18,3 +18,5 @@ Ducks позволяет нам:
 - redux-form  https://redux-form.com/8.0.4/docs/gettingstarted.md/
 - immutable
 - connected-react-router - для хранения роутов в redux
+    // мы сделали эту связку для того чтоб декларативно описывать управление роутером
+    // не императивно, вызываем а декларативно например команда push
