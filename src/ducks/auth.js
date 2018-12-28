@@ -3,7 +3,7 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import { Record } from 'immutable'
 // import store from '../redux'
-import { all, take, call, put } from 'redux-saga/effects'
+import { all, take, cps, call, put } from 'redux-saga/effects'
 
 // for mutations
 const ReducerRecord = Record({
@@ -46,13 +46,13 @@ export function signUp(email, password) {
     }
 }
 
+// SAGAS
 export const signUpSaga = function*() {
     const auth = firebase.auth()
 
     while (true) {
         // бесконечные генераторы это нормально / это не ф-ии, генераторы останавливают свое выполнение
         // можно сделать попытки (ограничения, но а так мы всегда прослушиваем этот экшен)
-
         const action = yield take(SIGN_UP_REQUEST) // будет ждать когда прийдет такой action и даст выполнение дальше
         try {
             const user = yield call(
@@ -73,39 +73,19 @@ export const signUpSaga = function*() {
     }
 }
 
-// ACTION CREATOR
-// export function signUp(email, password) {
-// 	return dispatch => {
-// 		dispatch({
-// 			type: SIGN_UP_REQUEST,
-// 		})
-// 		firebase
-// 			.auth()
-// 			.createUserWithEmailAndPassword(email, password)
-// 			.then(user =>
-// 				dispatch({
-// 					type: SIGN_UP_SUCCESS,
-// 					payload: { user },
-// 				}),
-// 			)
-// 			.catch(error =>
-// 				dispatch({
-// 					type: SIGN_UP_ERROR,
-// 					error,
-// 				}),
-// 			)
-// 	}
-// }
+export const watchStatusChange = function*() {
+    const auth = firebase.auth()
+    try {
+        // в node овском стиле первым аргументом идет ошибка а не данные
+        yield cps([auth, auth.onAuthStateChanged])
+    } catch (user) {
+        yield put({
+            type: SIGN_IN_SUCCESS,
+            payload: { user },
+        })
+    }
+}
 
-firebase.auth().onAuthStateChanged(user => {
-    const store = require('../redux').default
-    store.dispatch({
-        type: SIGN_IN_SUCCESS,
-        payload: { user },
-    })
-})
-
-// SAGA
 export const saga = function*() {
-    yield all([signUpSaga()])
+    yield all([signUpSaga(), watchStatusChange()])
 }
