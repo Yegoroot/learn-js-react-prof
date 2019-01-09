@@ -2,6 +2,8 @@ import { appName } from '../_general/config'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { Record } from 'immutable'
+import { reset } from 'redux-form'
+
 // import store from '../redux'
 import { all, take, cps, call, put } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
@@ -30,7 +32,7 @@ export default function reducer(state = new ReducerRecord(), action) {
     switch (type) {
         case SIGN_UP_REQUEST:
             return state.set('loading', true)
-        case SIGN_IN_SUCCESS:
+        case SIGN_UP_SUCCESS:
             return state
                 .set('loading', false)
                 .set('user', payload.user)
@@ -77,6 +79,7 @@ export const signUpSaga = function*() {
                 type: SIGN_UP_SUCCESS,
                 payload: { user },
             })
+            yield put(reset('authSignUp'))
         } catch (error) {
             yield put({
                 type: SIGN_UP_ERROR,
