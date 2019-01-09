@@ -20,7 +20,7 @@ const ReducerRecord = Record({
 export const moduleName = 'auth'
 export const SIGN_UP_REQUEST = `${appName}/${moduleName}/SIGN_UP_REQUEST`
 export const SIGN_UP_SUCCESS = `${appName}/${moduleName}/SIGN_UP_SUCCESS`
-export const SIGN_IN_SUCCESS = `${appName}/${moduleName}/SIGN_IN_SUCCESS`
+// export const SIGN_IN_SUCCESS = `${appName}/${moduleName}/SIGN_IN_SUCCESS`
 export const SIGN_UP_ERROR = `${appName}/${moduleName}/SIGN_UP_ERROR`
 export const SIGN_OUT_REQUEST = `${appName}/${moduleName}/SIGN_OUT_REQUEST`
 export const SIGN_OUT_SUCCESS = `${appName}/${moduleName}/SIGN_OUT_SUCCESS`
@@ -89,6 +89,7 @@ export const signUpSaga = function*() {
     }
 }
 
+// ДОПОЛНИТЕЛЬНО РЕАЛИЗОВАТЬ ЛОГИКУ ВХОДА ПЕРЕДЕЛАТЬ НА ПОЛНОЦЕННЫЙ ВХОД
 export const watchStatusChange = function*() {
     const auth = firebase.auth()
 
@@ -97,7 +98,7 @@ export const watchStatusChange = function*() {
         yield cps([auth, auth.onAuthStateChanged])
     } catch (user) {
         yield put({
-            type: SIGN_IN_SUCCESS,
+            type: SIGN_UP_SUCCESS,
             payload: { user },
         })
     }
