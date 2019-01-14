@@ -1,6 +1,6 @@
 import conferences from './conferences'
-
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/database'
 
 export function saveEventsToFB() {
     const eventsRef = firebase.database().ref('/events')
@@ -13,5 +13,6 @@ window.runMigration = function() {
         .ref('/events')
         .once('value', data => {
             if (!data.val()) saveEventsToFB()
+            console.log('123')
         })
 }

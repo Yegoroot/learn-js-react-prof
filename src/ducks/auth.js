@@ -5,8 +5,8 @@ import { Record } from 'immutable'
 import { reset } from 'redux-form'
 
 // import store from '../redux'
-import { all, take, cps, call, put } from 'redux-saga/effects'
-import { takeEvery } from 'redux-saga'
+import { all, take, cps, call, put, takeEvery } from 'redux-saga/effects'
+
 import { push } from 'connected-react-router'
 
 // for mutations
