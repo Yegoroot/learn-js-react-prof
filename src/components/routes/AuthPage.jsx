@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import SignInForm from '../components/Auth/SignInForm'
-import SignUpForm from '../components/Auth/SignUpForm'
+import SignInForm from '../auth/SignInForm'
+import SignUpForm from '../auth/SignUpForm'
 import { connect } from 'react-redux'
-import { signUp, signIn, moduleName } from '../ducks/auth'
+import { signUp, signIn, moduleName } from '../../ducks/auth'
 
 import { Route, NavLink } from 'react-router-dom'
 class AuthPage extends Component {

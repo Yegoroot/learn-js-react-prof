@@ -3,7 +3,7 @@ import store from './redux'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import './_general/config'
-import Root from './hoc/root'
+import Routes from './components/Root'
 import history from './history'
 import './mocks'
 class App extends Component {
@@ -13,7 +13,7 @@ class App extends Component {
                 <ConnectedRouter history={history}>
                     <div>
                         {/** прослойка обязательно */}
-                        <Root />
+                        <Routes />
                     </div>
                 </ConnectedRouter>
             </Provider>
