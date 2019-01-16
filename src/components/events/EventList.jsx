@@ -29,6 +29,6 @@ class EventList extends Component {
 }
 
 export default connect(
-    state => ({ events: state[moduleName] }),
+    state => ({ events: state[moduleName].entities }),
     { fetchAll },
 )(EventList)
