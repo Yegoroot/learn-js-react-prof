@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import AdminPage from './routes/AdminPage'
+import EventsPage from './routes/EventsPage'
 import AuthPage from './routes/AuthPage'
 import PeoplePage from './routes/PeoplePage'
 import ProtectedRoute from './common/protectedRoute'
@@ -16,6 +17,7 @@ class Root extends Component {
             <div>
                 {btn}
                 <Switch>
+                    <ProtectedRoute path="/events" component={EventsPage} />
                     <ProtectedRoute path="/admin" component={AdminPage} />
                     <ProtectedRoute path="/people" component={PeoplePage} />
                     <Route path="/auth" component={AuthPage} />
