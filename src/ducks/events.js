@@ -3,6 +3,7 @@ import { Record, OrderedMap } from 'immutable'
 import { all, take, put, call } from 'redux-saga/effects'
 import firebase from 'firebase/app'
 import 'firebase/database'
+import { createSelector } from 'reselect'
 
 /**
  * CONSTANTS
@@ -22,6 +23,18 @@ const ReducerRecord = Record({
     loaded: false,
     error: null,
 })
+
+// export const EventRecord = Record({
+//     id: null,
+//     title: null,
+//     url: null,
+//     where: null,
+//     dateFrom: null,
+//     dateTo: null,
+//     month: null,
+//     submissionDeadline: null,
+//     country: null,
+// })
 
 export default function reducer(state = new ReducerRecord(), action) {
     const { type, payload, error } = action
@@ -47,6 +60,11 @@ export default function reducer(state = new ReducerRecord(), action) {
 /**
  * SELSECTORS
  **/
+export const stateSelector = state => state[moduleName]
+export const entitiesSelector = createSelector(
+    stateSelector,
+    state => state.entities,
+)
 
 /**
  * ACTION CREATORS
