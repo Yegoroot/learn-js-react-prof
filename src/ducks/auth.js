@@ -85,7 +85,8 @@ export const signUpSaga = function*() {
 
     while (true) {
         // бесконечные генераторы это нормально / это не ф-ии, генераторы останавливают свое выполнение
-        // можно сделать попытки (ограничения, но а так мы всегда прослушиваем этот экшен)
+        // можно сделать попытки (ограничения входа например), но а так мы всегда прослушиваем этот экшен)
+        // или использовать takeEvery
         const action = yield take(SIGN_UP_REQUEST) // будет ждать когда прийдет такой action и даст выполнение дальше
         try {
             const user = yield call(
@@ -142,7 +143,7 @@ export const watchStatusChange = function*() {
         yield cps([auth, auth.onAuthStateChanged])
     } catch (user) {
         yield put({
-            type: SIGN_UP_SUCCESS,
+            type: SIGN_IN_SUCCESS,
             payload: { user },
         })
     }

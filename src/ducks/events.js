@@ -1,23 +1,44 @@
 import { appName } from '../_general/config'
-import { Record } from 'immutable'
-import { all } from 'redux-saga/effects'
+import { Record, OrderedMap } from 'immutable'
+import { all, take, put, call } from 'redux-saga/effects'
+import firebase from 'firebase/app'
+import 'firebase/database'
 
 /**
  * CONSTANTS
  **/
 export const moduleName = 'events'
 const prefix = `${appName}/${moduleName}`
-export const CONST_EXAMPLE = `${prefix}/CONST_EXAMPLE`
+export const FETCH_ALL_REQUEST = `${prefix}/FETCH_ALL_REQUEST`
+export const FETCH_ALL_SUCCESS = `${prefix}/FETCH_ALL_SUCCESS`
+export const FETCH_ALL_ERROR = `${prefix}/FETCH_ALL_ERROR`
 
 /**
  * REDUCER
  **/
-const ReducerRecord = Record({})
+const ReducerRecord = Record({
+    entities: new OrderedMap({}),
+    loading: false,
+    loaded: false,
+    error: null,
+})
 
 export default function reducer(state = new ReducerRecord(), action) {
-    const { type } = action
+    const { type, payload, error } = action
 
     switch (type) {
+        case FETCH_ALL_REQUEST:
+            return state.set('loading', true)
+
+        case FETCH_ALL_SUCCESS:
+            return state
+                .set('loading', false)
+                .set('loaded', true)
+                .set('entities', new OrderedMap(payload))
+
+        case FETCH_ALL_ERROR:
+            return state.set('loading', false).set('error', error)
+
         default:
             return state
     }
@@ -30,10 +51,36 @@ export default function reducer(state = new ReducerRecord(), action) {
 /**
  * ACTION CREATORS
  **/
+export function fetchAll() {
+    return {
+        type: FETCH_ALL_REQUEST,
+    }
+}
 
 /**
  * SAGAS
  **/
+
+export const fetchAllSaga = function*() {
+    while (true) {
+        try {
+            yield take(FETCH_ALL_REQUEST)
+            const ref = firebase.database().ref('events')
+            const data = yield call([ref, ref.once], 'value')
+            yield put({
+                type: FETCH_ALL_SUCCESS,
+                payload: data.val(),
+            })
+        } catch (error) {
+            alert('Ошибка, next FETCH_ALL_ERROR')
+            yield put({
+                type: FETCH_ALL_ERROR,
+                error,
+            })
+        }
+    }
+}
+
 export const saga = function*() {
-    yield all([])
+    yield all([fetchAllSaga()])
 }
